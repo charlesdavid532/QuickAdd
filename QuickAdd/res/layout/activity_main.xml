@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linnnnlayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+     <LinearLayout android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="0dp"
+        android:paddingBottom="20dp"
+        android:orientation="vertical">
+
+    <EditText android:id="@+id/row_0"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+    <EditText android:id="@+id/row_1"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    <EditText android:id="@+id/row_2"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    <EditText android:id="@+id/row_3"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    <EditText android:id="@+id/row_4"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    
+     </LinearLayout>
+
+     
+     <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="250dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+
+    <EditText android:id="@+id/column_0"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+    <EditText android:id="@+id/column_1"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    <EditText android:id="@+id/column_2"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    <EditText android:id="@+id/column_3"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    <EditText android:id="@+id/column_4"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    <EditText android:id="@+id/column_5"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+    
+     </LinearLayout>
+     
+     <Button android:id="@+id/done_button"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/done_button_text"
+         android:layout_marginTop="350dp"/>
+     
+     <Button android:id="@+id/play_again_button"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/play_again_button_text"
+         android:layout_marginTop="350dp"
+         android:layout_marginLeft="100dp"/>
+     
+     <Button android:id="@+id/chart_button"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/title_chart"
+         android:layout_marginTop="350dp"
+         android:layout_marginLeft="200dp"/>
+     
+     <TextView android:id="@+id/score_label"
+		         android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="0dp"
+		        android:layout_marginTop="400dp" />
+     
+     <!-- These are the horizontal feedback images i.e tick and cross-->
+     <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="250dp"
+        android:paddingRight="50dp"
+        
+        android:orientation="horizontal">
+		     <ImageView 
+		           style="@style/Tickcrossstyle"
+				   android:id="@+id/hor_image_0"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+				   
+		 	/>
+		     <ImageView 
+		           style="@style/Tickcrossstyle"
+				   android:id="@+id/hor_image_1"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     
+		     <ImageView 
+		           style="@style/Tickcrossstyle"
+				   android:id="@+id/hor_image_2"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     
+		     <ImageView 
+		           style="@style/Tickcrossstyle"
+				   android:id="@+id/hor_image_3"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     
+		     <ImageView 
+		           style="@style/Tickcrossstyle"
+				   android:id="@+id/hor_image_4"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     
+		     
+     </LinearLayout>
+     
+     <!-- These are the vertical feedback images i.e tick and cross-->
+     <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
+		     <ImageView 
+		           style="@style/Tickcrossstyle1"
+				   android:id="@+id/ver_image_0"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     <ImageView 
+		           style="@style/Tickcrossstyle1"
+				   android:id="@+id/ver_image_1"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     <ImageView 
+		           style="@style/Tickcrossstyle1"
+				   android:id="@+id/ver_image_2"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     <ImageView 
+		           style="@style/Tickcrossstyle1"
+				   android:id="@+id/ver_image_3"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     <ImageView 
+		           style="@style/Tickcrossstyle1"
+				   android:id="@+id/ver_image_4"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+		 	/>
+		     </LinearLayout>
+		     <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="250dp"
+        android:orientation="horizontal">
+     <ImageView 
+		           style="@style/Tickcrossstyle"
+				   android:id="@+id/total_image"
+				   android:src="@drawable/greentick4"
+				   android:layout_width="13dp"
+				   android:layout_height="15dp"
+				   
+		 	/>
+     </LinearLayout>
+     
+		     <TextView android:id="@+id/user_time"
+		         android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="200dp"
+		        android:layout_marginTop="300dp" />
+</RelativeLayout>
