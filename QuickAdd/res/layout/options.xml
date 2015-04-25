@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+        android:id="@+id/column_wise_label"
+        android:text="@string/column_wise_label_text"
+        android:layout_width="wrap_content"
+    	android:layout_height="30dp">
+    </TextView>
+
+ 	<ToggleButton 
+	    android:id="@+id/column_wise_additions"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textOn="@string/on"
+	    android:textOff="@string/off"/>
+ 	
+ 	<Spinner
+	    android:id="@+id/difficultySpinner"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="false" />  
+ 	
+
+</LinearLayout>

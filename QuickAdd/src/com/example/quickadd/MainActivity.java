@@ -5,23 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.quickadd.GridData.DifficultyLevel;
+import com.example.quickadd.LeaveGameDialogFragment.LeaveGameDialogListener;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -33,7 +41,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements LeaveGameDialogListener {
 	private GridData mGridData;
 	private GridView mGridView;
 	private ResultData mResultData;
@@ -47,6 +55,7 @@ public class MainActivity extends ActionBarActivity {
 	private View mGridTableView;
 	private RelativeLayout mainLayout;
 	private DBHelper mDBHelper;
+	private SharedPreferences mSharedPref;
 	
 	private static final String TAG = "MAIN-ACTIVITY";
 	@Override
@@ -55,15 +64,17 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		mDBHelper = new DBHelper(this);
 		//mDBHelper.insertScore(100);
-		mDBHelper.insertRowInTable(1, 4, 2015, 200);
+		//mDBHelper.insertRowInTable(1, 4, 2015, 200);
 		mainLayout = (RelativeLayout) findViewById(R.id.linnnnlayout);
-		mGridData = new GridData(5, DifficultyLevel.EASY);
+		createGridDataObj();
 		mGridView = new GridView(mGridData, getApplicationContext());
 		mGridTableView = mGridView.constructTable();
 		mainLayout.addView(mGridTableView);
 		
 		mGridView.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 		
+		// Binding keyevents on the edittexts
+		bindEvents();
 		// initializing the tick and cross images
 		initializeFeedbackImages();
 		
@@ -107,6 +118,46 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	private void createGridDataObj() {
+		mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		int level =mSharedPref.getInt("difficultyLevel", 0); 
+		mGridData = new GridData(5, getDifficultyFromNumber(level));
+	}
+	
+	private DifficultyLevel getDifficultyFromNumber(int num) {
+		switch(num) {
+		case 0:
+			return DifficultyLevel.EASY;
+		case 1:
+			return DifficultyLevel.MEDIUM;
+		case 2:
+			return DifficultyLevel.NASTY;
+		default:
+			return DifficultyLevel.EASY;
+			
+		}
+	}
+	
+	private void bindEvents() {
+		Boolean isColWiseAdd = mSharedPref.getBoolean("isColWiseAdd", false);
+		if (isColWiseAdd) {
+			Resources r = getResources();
+			String name = getPackageName();
+			
+			for (int i = 0; i < mGridData.getGridSize(); i++) {
+				final EditText temp = (EditText) findViewById(r.getIdentifier(
+						"row_" + i, "id", name));
+				final EditText temp1 = (EditText) findViewById(r.getIdentifier(
+						"column_" + i, "id", name));
+				temp.addTextChangedListener(new CustomTextWatcher(temp));
+				temp1.addTextChangedListener(new CustomTextWatcher(temp));
+			}
+			final EditText temp2 = (EditText) findViewById(R.id.column_5);
+			temp2.addTextChangedListener(new CustomTextWatcher(temp2));
+		}
+	}
+
+	
 	private void onDoneBtnClick() {
 		// Stop the timer
 		mUserTimer.stop();
@@ -133,6 +184,20 @@ public class MainActivity extends ActionBarActivity {
 		
 		setCorrectFeedbackImages();
 		showFooter();
+	}
+	
+	public void onExitActivity() {
+		int[] userRowInputs = new int[mGridData.getGridSize()];
+		int[] userColumnInputs = new int[mGridData.getGridSize()];
+		for (int i=0; i < mGridData.getGridSize(); i++) {
+			userRowInputs[i] = 0;
+			userColumnInputs[i] = 0;
+		}
+		UserInputData mUserInputData = new UserInputData(userRowInputs, 
+				userColumnInputs, 0, mUserTimer.getTimeInSeconds());
+		
+		mResultData = new ResultData(mGridData, mUserInputData);
+		insertScoreInDB();
 	}
 	
 	@SuppressLint("NewApi")
@@ -249,9 +314,19 @@ public class MainActivity extends ActionBarActivity {
 	
 	private void showFooter() {
 		hideDoneBtn();
-		setScoreLabel(mResultData.getScore());
+		//setScoreLabel(mResultData.getScore());
+		showScoreDialog();
 		showPlayAgainBtn();
+		insertScoreInDB();
+	}
+	
+	public void insertScoreInDB() {
 		mDBHelper.insertScore(mResultData.getScore());
+	}
+	
+	private void showScoreDialog() {
+		YourScoreDialogFragment fragment = new YourScoreDialogFragment(mResultData.getScore());
+		fragment.show(getSupportFragmentManager(), "score");
 	}
 	
 	
@@ -312,6 +387,25 @@ public class MainActivity extends ActionBarActivity {
 	
 	private void showDoneBtn() {
 		mDoneBtnView.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		onExitActivity();
+		finish();
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		LeaveGameDialogFragment fragment = new LeaveGameDialogFragment();
+		fragment.show(getSupportFragmentManager(), "EXIT DIALOG");
 	}
 	
 

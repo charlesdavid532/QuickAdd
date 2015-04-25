@@ -22,6 +22,11 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 
 
+
+
+
+import com.example.quickadd.ChangeDateDialogFragment.ChangeDateDialogListener;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -30,6 +35,8 @@ import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,7 +48,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ChartActivity extends Activity {
+public class ChartActivity extends FragmentActivity implements ChangeDateDialogListener{
 	private GraphicalView mChart;
 	private String[] mMonths = new String[] { "Jan", "Feb", "Mar", "Apr", "May",
 			"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
@@ -160,18 +167,18 @@ public class ChartActivity extends Activity {
 		multiRenderer = new XYMultipleSeriesRenderer();
 		multiRenderer.setXLabels(0);
 		multiRenderer.setChartTitle("Scores Chart");
-		multiRenderer.setXTitle("April 2014");
+		multiRenderer.setXTitle(mMonths[mMonth]+ " " + String.valueOf(mYear));
 		multiRenderer.setYTitle("Scores");
 		
 		/***
 		 * Customizing graphs
 		 */
 		// setting text size of the title
-		multiRenderer.setChartTitleTextSize(14);
+		multiRenderer.setChartTitleTextSize(18);
 		// setting text size of the axis title
-		multiRenderer.setAxisTitleTextSize(12);
+		multiRenderer.setAxisTitleTextSize(16);
 		// setting text size of the graph lable
-		multiRenderer.setLabelsTextSize(8);
+		multiRenderer.setLabelsTextSize(14);
 		// setting zoom buttons visiblity
 		multiRenderer.setZoomButtonsVisible(false);
 		// setting pan enablity which uses graph to move on both axis
@@ -252,10 +259,13 @@ public class ChartActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				showDialog(DATE_DIALOG_ID);
+				//showDialog(DATE_DIALOG_ID);
+				DialogFragment fragment = new ChangeDateDialogFragment(mMonth, mYear);
+				fragment.show(getSupportFragmentManager(), "Change Date");
 			}
 		}); 
 	}
+	
 	
 	DatePickerDialog.OnDateSetListener mDateSetListner = new OnDateSetListener() {
 
@@ -359,4 +369,23 @@ public class ChartActivity extends Activity {
         }
         return dpd;
     }
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, DateModel data) {
+		// TODO Auto-generated method stub
+		mMonth = data.getMonth();
+		mYear = data.getYear();
+		createScoreSeries(mMonth, mYear);
+		if (multiRenderer != null){
+			Log.i(TAG,"Wow it did reach here: but why!!");
+			multiRenderer.setXTitle(mMonths[mMonth]+ " " + String.valueOf(mYear));
+		}
+		mChart.repaint();
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
+	}
 }

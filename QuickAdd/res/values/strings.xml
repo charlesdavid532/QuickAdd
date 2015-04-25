@@ -2,12 +2,25 @@
 <resources>
 
     <string name="app_name">QuickAdd</string>
+    <string name="view_progress_button_text">VIEW PROGRESS</string>
+    <string name="options_button_text">OPTIONS</string>
+    <string name="play_game_button_text">PLAY</string>
     <string name="done_button_text">Done!</string>
     <string name="play_again_button_text">Play again</string>
     <string name="change_date_button_text">Change date</string>
     <string name="score_text">Your score is:</string>
     <string name="action_settings">Settings</string>
     <string name="title_chart">Chart</string>
+    <string name="title_grid">Grid</string>
+    <string name="title_options">Options</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="ok">OK</string>
+    <string name="set">SET</string>
+    <string name="cancel">CANCEL</string>
+    <string name="set_date_string">Set Month and Year</string>
+    <string name="column_wise_label_text">Column wise addition (Preferably off)</string>
+    <string name="exit_label_text">Are you sure you want to leave this game? Your score will be zero</string>
     <string-array name="month_array">
         <item>Jan</item>
         <item>Feb</item>
@@ -21,6 +34,11 @@
         <item>Oct</item>
         <item>Nov</item>
         <item>Dec</item>
+    </string-array>
+    <string-array name="difficulty_array">
+        <item>EASY</item>
+        <item>MEDIUM</item>
+        <item>NASTY</item>
     </string-array>
 
 </resources>
