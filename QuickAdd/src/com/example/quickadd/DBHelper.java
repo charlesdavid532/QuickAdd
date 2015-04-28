@@ -3,6 +3,8 @@ package com.example.quickadd;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.example.quickadd.GridData.DifficultyLevel;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String SCORE_HISTORY_COLUMN_YEAR = "year";
 	public static final String SCORE_HISTORY_COLUMN_SCORE = "score";
 	public static final String SCORE_HISTORY_COLUMN_COUNTER = "counter";
+	public static final String SCORE_HISTORY_DIFFICULTY_LEVEL = "difficulty";
 	
 	
 	private static final String TEXT_TYPE = " TEXT";
@@ -34,7 +37,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	    		SCORE_HISTORY_COLUMN_MONTH + INTEGER_TYPE + COMMA_SEP +
 	    		SCORE_HISTORY_COLUMN_YEAR + INTEGER_TYPE + COMMA_SEP +
 	    		SCORE_HISTORY_COLUMN_SCORE + INTEGER_TYPE + COMMA_SEP +
-	    		SCORE_HISTORY_COLUMN_COUNTER + INTEGER_TYPE + 
+	    		SCORE_HISTORY_COLUMN_COUNTER + INTEGER_TYPE + COMMA_SEP +
+	    		SCORE_HISTORY_DIFFICULTY_LEVEL + INTEGER_TYPE +
 		")";
 
 	private static final String SQL_DELETE_ENTRIES =
@@ -61,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 	
-	public Boolean insertScore(int score) {
+	public Boolean insertScore(int score,int level) {
 		//Log.i(TAG,"what the fuck");
 		//SQLiteDatabase db = this.getWritableDatabase();
 		//db.execSQL(SQL_DELETE_ENTRIES);
@@ -73,14 +77,14 @@ public class DBHelper extends SQLiteOpenHelper {
 		
 		
 		
-		if (!updateScoreInTable(date, month, year, score)) {
-			insertRowInTable(date, month, year, score);
+		if (!updateScoreInTable(date, month, year, score,level)) {
+			insertRowInTable(date, month, year, score,level);
 		}
 		
 		return true;
 	}
 	
-	public void insertRowInTable(int date,int month,int year,int score) {
+	public void insertRowInTable(int date,int month,int year,int score,int level) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues content = new ContentValues();
 		content.put(SCORE_HISTORY_COLUMN_ID, 
@@ -90,20 +94,22 @@ public class DBHelper extends SQLiteOpenHelper {
 		content.put(SCORE_HISTORY_COLUMN_YEAR,year);
 		content.put(SCORE_HISTORY_COLUMN_SCORE, score);
 		content.put(SCORE_HISTORY_COLUMN_COUNTER, 1);
+		content.put(SCORE_HISTORY_DIFFICULTY_LEVEL, level);
 		
 		Log.i(TAG,"date:"+ date + "month:"+ month + "year:"+ year);
 		
 		db.insert(SCORE_HISTORY_TABLE_NAME, null, content);
 	}
 	
-	private Boolean updateScoreInTable(int date,int month,int year,int score) {
+	private Boolean updateScoreInTable(int date,int month,int year,int score,int level) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor res = db.rawQuery("SELECT "+ SCORE_HISTORY_COLUMN_ID + COMMA_SEP  +
 				SCORE_HISTORY_COLUMN_SCORE + COMMA_SEP +
 				SCORE_HISTORY_COLUMN_COUNTER + " FROM " + SCORE_HISTORY_TABLE_NAME +
 				" WHERE " + SCORE_HISTORY_COLUMN_DATE + " = " + date + " AND " +
 				SCORE_HISTORY_COLUMN_MONTH + " = " + month + " AND " +
-				SCORE_HISTORY_COLUMN_YEAR + " = " + year + "", null);
+				SCORE_HISTORY_COLUMN_YEAR + " = " + year + " AND " +
+				SCORE_HISTORY_DIFFICULTY_LEVEL + " = " + level + "", null);
 		
 		if (res.getCount() > 0) {
 			res.moveToFirst();
@@ -125,7 +131,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.update(SCORE_HISTORY_TABLE_NAME, content, SCORE_HISTORY_COLUMN_ID + " = " + id, null);
 	}
 	
-	public ChartData getScoresAndDates(int month, int year) {
+	public ChartData getScoresAndDates(int month, int year,int level) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		ChartData data;
 		ArrayList<Integer> scores = new ArrayList<Integer>();
@@ -133,7 +139,8 @@ public class DBHelper extends SQLiteOpenHelper {
 		Cursor res = db.rawQuery("SELECT "+ SCORE_HISTORY_COLUMN_SCORE + COMMA_SEP +
 				SCORE_HISTORY_COLUMN_DATE + " FROM " + SCORE_HISTORY_TABLE_NAME +
 				" WHERE " + SCORE_HISTORY_COLUMN_MONTH + " = " + month + " AND " +				
-				SCORE_HISTORY_COLUMN_YEAR + " = " + year + "", null);
+				SCORE_HISTORY_COLUMN_YEAR + " = " + year + " AND " +
+				SCORE_HISTORY_DIFFICULTY_LEVEL + " = " + level + "", null);
 		
 		if (res.getCount() > 0) {
 			res.moveToFirst();

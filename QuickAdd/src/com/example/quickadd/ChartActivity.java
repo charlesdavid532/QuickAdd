@@ -25,7 +25,9 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 
 
+
 import com.example.quickadd.ChangeDateDialogFragment.ChangeDateDialogListener;
+import com.example.quickadd.GridData.DifficultyLevel;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -54,8 +56,14 @@ public class ChartActivity extends FragmentActivity implements ChangeDateDialogL
 			"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 	private Spinner mMonthSpinner;
 	private DBHelper mDBHelper;
-	private XYSeries scoreSeries;
+	private XYSeries easySeries;
+	private XYSeries mediumSeries;
+	private XYSeries nastySeries;
+	private XYMultipleSeriesDataset dataset;
 	private XYMultipleSeriesRenderer multiRenderer;
+	private XYSeriesRenderer easyRenderer;
+	private XYSeriesRenderer mediumRenderer;
+	private XYSeriesRenderer nastyRenderer;
 	private int mDay = 30;
 	private int mMonth = 5;
 	private int mYear = 2013;
@@ -100,7 +108,7 @@ public class ChartActivity extends FragmentActivity implements ChangeDateDialogL
 		        // An item was selected. You can retrieve the selected item using
 		        // parent.getItemAtPosition(pos)
 				Log.i(TAG,"month:"+pos);
-				createScoreSeries(pos, 2015);
+				createScoreSeries(pos, 2015,0);
 				if (multiRenderer != null){
 					Log.i(TAG,"Wow it did reach here: but why!!");
 					multiRenderer.setXTitle("May 2014");
@@ -116,51 +124,115 @@ public class ChartActivity extends FragmentActivity implements ChangeDateDialogL
 		});
 	}
 	
-	private void createScoreSeries(int month,int year) {
-		ChartData data = mDBHelper.getScoresAndDates(month, year);
+	private void createScoreSeries(int month,int year,int level) {
+		ChartData data = mDBHelper.getScoresAndDates(month, year,level);
 		ArrayList<Integer> scores = data.getScores();
 		ArrayList<Integer> dates = data.getDates();
-		scoreSeries.clear();
+		//scoreSeries.clear();
+		XYSeries series = getSeriesFromLevel(level); 
+		series.clear();
 		if (dates != null) {
 			for (int i=0; i < dates.size(); i++) {
 				Log.i(TAG,"i:"+i+"date:"+dates.get(i)+"score:"+ scores.get(i));
-				scoreSeries.add(dates.get(i), scores.get(i));
+				//scoreSeries.add(dates.get(i), scores.get(i));
+				series.add(dates.get(i), scores.get(i));
 			}
 		}
 	}
 	
-	private void createScoreChart() {
-		mDBHelper = new DBHelper(getApplicationContext());
-		/*
-		ChartData data = mDBHelper.getScoresAndDates(3, 2015);
-		ArrayList<Integer> scores = data.getScores();
-		ArrayList<Integer> dates = data.getDates();
-		scoreSeries = new XYSeries("Scores");
-		for (int i=0; i < dates.size(); i++) {
-			Log.i(TAG,"i:"+i+"date:"+dates.get(i)+"score:"+ scores.get(i));
-			scoreSeries.add(dates.get(i), scores.get(i));
+	private XYSeries getSeriesFromLevel(int level) {
+		switch (level) {
+		case 0:
+			return easySeries;
+		case 1:
+			return mediumSeries;
+		case 2:
+			return nastySeries;
+			default:
+				return easySeries;
 		}
-		*/
-		scoreSeries = new XYSeries("Scores");
-		createScoreSeries(3, 2015); // TODO: Replace this with current month and year
+	}
+	private void initializeDataSet() {
+		easySeries = new XYSeries("EasyScores");
+		mediumSeries = new XYSeries("MediumScores");
+		nastySeries = new XYSeries("NastyScores");
+	}
+	private void createDataSet() {
+		
+		createScoreSeries(3, 2015,0); // TODO: Replace this with current month and year
 		Log.i(TAG,"no problem with the loop");
 		// Creating a dataset to hold each series
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+		dataset = new XYMultipleSeriesDataset();
 		// Adding Income Series to the dataset
-		dataset.addSeries(scoreSeries);
-				
+		dataset.addSeries(easySeries);
+		
+		
+		createScoreSeries(3, 2015,1); // TODO: Replace this with current month and year
+		dataset.addSeries(mediumSeries);
+		
+		
+		createScoreSeries(3, 2015,2); // TODO: Replace this with current month and year
+		dataset.addSeries(nastySeries);
+	}
+	
+	private void createRenderers() {
+		createEasyRenderer();
+		createMediumRenderer();
+		createNastyRenderer();
+	}
+	
+	private void createEasyRenderer() {
 		// Creating XYSeriesRenderer to customize scoreSeries
-		XYSeriesRenderer scoreRenderer = new XYSeriesRenderer();
-		scoreRenderer.setColor(Color.CYAN); // color of the graph set to cyan
-		scoreRenderer.setFillPoints(true);
-		scoreRenderer.setLineWidth(2f);
-		scoreRenderer.setDisplayChartValues(true);
+		easyRenderer = new XYSeriesRenderer();
+		easyRenderer.setColor(Color.CYAN); // color of the graph set to cyan
+		easyRenderer.setFillPoints(true);
+		easyRenderer.setLineWidth(2f);
+		easyRenderer.setDisplayChartValues(true);
 		// setting chart value distance
-		scoreRenderer.setDisplayChartValuesDistance(10);
+		easyRenderer.setDisplayChartValuesDistance(10);
 		// setting line graph point style to circle
-		scoreRenderer.setPointStyle(PointStyle.CIRCLE);
+		easyRenderer.setPointStyle(PointStyle.CIRCLE);
 		// setting stroke of the line chart to solid
-		scoreRenderer.setStroke(BasicStroke.SOLID);
+		easyRenderer.setStroke(BasicStroke.SOLID);
+	}
+	
+	private void createMediumRenderer() {
+		// Creating XYSeriesRenderer to customize scoreSeries
+		mediumRenderer = new XYSeriesRenderer();
+		mediumRenderer.setColor(Color.GREEN); // color of the graph set to cyan
+		mediumRenderer.setFillPoints(true);
+		mediumRenderer.setLineWidth(2f);
+		mediumRenderer.setDisplayChartValues(true);
+		// setting chart value distance
+		mediumRenderer.setDisplayChartValuesDistance(10);
+		// setting line graph point style to circle
+		mediumRenderer.setPointStyle(PointStyle.CIRCLE);
+		// setting stroke of the line chart to solid
+		mediumRenderer.setStroke(BasicStroke.SOLID);
+	}
+	
+	private void createNastyRenderer() {
+		// Creating XYSeriesRenderer to customize scoreSeries
+		nastyRenderer = new XYSeriesRenderer();
+		nastyRenderer.setColor(Color.RED); // color of the graph set to cyan
+		nastyRenderer.setFillPoints(true);
+		nastyRenderer.setLineWidth(2f);
+		nastyRenderer.setDisplayChartValues(true);
+		// setting chart value distance
+		nastyRenderer.setDisplayChartValuesDistance(10);
+		// setting line graph point style to circle
+		nastyRenderer.setPointStyle(PointStyle.CIRCLE);
+		// setting stroke of the line chart to solid
+		nastyRenderer.setStroke(BasicStroke.SOLID);
+	}
+	
+	private void createScoreChart() {
+		mDBHelper = new DBHelper(getApplicationContext());
+		
+		initializeDataSet();
+		createDataSet();
+				
+		createRenderers();
 		
 		
 		// Creating a XYMultipleSeriesRenderer to customize the whole chart
@@ -237,7 +309,9 @@ public class ChartActivity extends FragmentActivity implements ChangeDateDialogL
 		// setting the margin size for the graph in the order top, left, bottom,
 		// right
 		multiRenderer.setMargins(new int[] { 30, 30, 30, 30 });
-		multiRenderer.addSeriesRenderer(scoreRenderer);
+		multiRenderer.addSeriesRenderer(easyRenderer);
+		multiRenderer.addSeriesRenderer(mediumRenderer);
+		multiRenderer.addSeriesRenderer(nastyRenderer);
 		
 		// this part is used to display graph on the xml
 		LinearLayout chartContainer = (LinearLayout) findViewById(R.id.chart);
@@ -267,115 +341,14 @@ public class ChartActivity extends FragmentActivity implements ChangeDateDialogL
 	}
 	
 	
-	DatePickerDialog.OnDateSetListener mDateSetListner = new OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                int dayOfMonth) {
-
-            mYear = year;
-            mMonth = monthOfYear;
-            mDay = dayOfMonth;
-            updateDate();
-        }
-    };
-    
-    
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case DATE_DIALOG_ID:
-            /*
-             * return new DatePickerDialog(this, mDateSetListner, mYear, mMonth,
-             * mDay);
-             */
-            DatePickerDialog datePickerDialog = this.customDatePicker();
-            return datePickerDialog;
-        }
-        return null;
-    }
-
-    @SuppressWarnings("deprecation")
-    protected void updateDate() {
-        Log.i(TAG,"month selected:"+mMonth);
-        Log.i(TAG,"year selected:"+mYear);
-        createScoreSeries(mMonth, mYear);
-		if (multiRenderer != null){
-			Log.i(TAG,"Wow it did reach here: but why!!");
-			multiRenderer.setXTitle(mMonths[mMonth]+ " " + String.valueOf(mYear));
-		}
-		mChart.repaint();
-        
-    }
-
-    private DatePickerDialog customDatePicker() {
-        DatePickerDialog dpd = new DatePickerDialog(this, mDateSetListner,
-                mYear, mMonth, mDay) {
-        	@Override
-        	public void onDateChanged(DatePicker view, int year,
-        			int month, int day) {
-        		// TODO Auto-generated method stub
-        		super.onDateChanged(view, year, month, day);
-        		setTitle(mMonths[month] + " " + String.valueOf(year));
-        		try {
-                    Field[] datePickerDialogFields = this.getClass().getDeclaredFields();
-                    for (Field datePickerDialogField : datePickerDialogFields) {
-                        if (datePickerDialogField.getName().equals("mDatePicker")) {
-                            datePickerDialogField.setAccessible(true);
-                            DatePicker datePicker = (DatePicker) datePickerDialogField
-                                    .get(this);
-                            Field datePickerFields[] = datePickerDialogField.getType()
-                                    .getDeclaredFields();
-                            for (Field datePickerField : datePickerFields) {
-                                if ("mDayPicker".equals(datePickerField.getName())
-                                        || "mDaySpinner".equals(datePickerField
-                                                .getName())) {
-                                    datePickerField.setAccessible(true);
-                                    Object dayPicker = new Object();
-                                    dayPicker = datePickerField.get(datePicker);
-                                    ((View) dayPicker).setVisibility(View.GONE);
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception ex) {
-                	Log.i(TAG,"Exception encountered"+ex);
-                }
-        	}
-        };
-        try {
-            Field[] datePickerDialogFields = dpd.getClass().getDeclaredFields();
-            for (Field datePickerDialogField : datePickerDialogFields) {
-                if (datePickerDialogField.getName().equals("mDatePicker")) {
-                    datePickerDialogField.setAccessible(true);
-                    DatePicker datePicker = (DatePicker) datePickerDialogField
-                            .get(dpd);
-                    Field datePickerFields[] = datePickerDialogField.getType()
-                            .getDeclaredFields();
-                    for (Field datePickerField : datePickerFields) {
-                        if ("mDayPicker".equals(datePickerField.getName())
-                                || "mDaySpinner".equals(datePickerField
-                                        .getName())) {
-                            datePickerField.setAccessible(true);
-                            Object dayPicker = new Object();
-                            dayPicker = datePickerField.get(datePicker);
-                            ((View) dayPicker).setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-        	Log.i(TAG,"Exception encountered::::::"+ex);
-        }
-        return dpd;
-    }
-
+	
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog, DateModel data) {
 		// TODO Auto-generated method stub
 		mMonth = data.getMonth();
 		mYear = data.getYear();
-		createScoreSeries(mMonth, mYear);
+		//createScoreSeries(mMonth, mYear,0);
+		createDataSet();
 		if (multiRenderer != null){
 			Log.i(TAG,"Wow it did reach here: but why!!");
 			multiRenderer.setXTitle(mMonths[mMonth]+ " " + String.valueOf(mYear));

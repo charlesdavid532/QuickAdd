@@ -56,6 +56,7 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 	private RelativeLayout mainLayout;
 	private DBHelper mDBHelper;
 	private SharedPreferences mSharedPref;
+	private int mLevel;
 	
 	private static final String TAG = "MAIN-ACTIVITY";
 	@Override
@@ -63,8 +64,17 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mDBHelper = new DBHelper(this);
-		//mDBHelper.insertScore(100);
-		//mDBHelper.insertRowInTable(1, 4, 2015, 200);
+		//mDBHelper.insertScore(100,0);
+		//mDBHelper.insertScore(400,1);
+		//mDBHelper.insertScore(700,2);
+		/*
+		mDBHelper.insertRowInTable(27, 4, 2015, 200,0);
+		mDBHelper.insertRowInTable(27, 4, 2015, 100,1);
+		mDBHelper.insertRowInTable(27, 4, 2015, 900,2);
+		mDBHelper.insertRowInTable(28, 4, 2015, 300,1);
+		mDBHelper.insertRowInTable(29, 4, 2015, 800,2);
+		mDBHelper.insertRowInTable(30, 4, 2015, 400,0);
+		*/
 		mainLayout = (RelativeLayout) findViewById(R.id.linnnnlayout);
 		createGridDataObj();
 		mGridView = new GridView(mGridData, getApplicationContext());
@@ -120,8 +130,8 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 	
 	private void createGridDataObj() {
 		mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		int level =mSharedPref.getInt("difficultyLevel", 0); 
-		mGridData = new GridData(5, getDifficultyFromNumber(level));
+		mLevel =mSharedPref.getInt("difficultyLevel", 0); 
+		mGridData = new GridData(5, getDifficultyFromNumber(mLevel));
 	}
 	
 	private DifficultyLevel getDifficultyFromNumber(int num) {
@@ -321,7 +331,7 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 	}
 	
 	public void insertScoreInDB() {
-		mDBHelper.insertScore(mResultData.getScore());
+		mDBHelper.insertScore(mResultData.getScore(),mLevel);
 	}
 	
 	private void showScoreDialog() {
