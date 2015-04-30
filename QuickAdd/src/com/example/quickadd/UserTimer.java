@@ -18,6 +18,7 @@ public class UserTimer {
     long updatedTime = 0L;
     private int secs;
     private int mins;
+    private Boolean mIsTimerRunning = false;
 	
 	public UserTimer(Context context) {
 		// TODO Auto-generated constructor stub
@@ -30,17 +31,26 @@ public class UserTimer {
 	public void start() {
 		startTime = SystemClock.uptimeMillis();
         customHandler.postDelayed(updateTimerThread, 1000);
-
+        mIsTimerRunning = true;
 	}
 	
 	public void stop() {
 		customHandler.removeCallbacks(updateTimerThread);
+		mIsTimerRunning = false;
 	}
 	
 	public int getTimeInSeconds() {
 		return ((mins*60)+secs);
 	}
 	
+	public Boolean getIsTimerRunning() {
+		return mIsTimerRunning;
+	}
+
+	public void setIsTimerRunning(Boolean mIsTimerRunning) {
+		this.mIsTimerRunning = mIsTimerRunning;
+	}
+
 	private Runnable updateTimerThread = new Runnable() {
 		        public void run() {
 		            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;

@@ -50,7 +50,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ChartActivity extends FragmentActivity implements ChangeDateDialogListener{
+public class ChartActivity extends MenuOptionsActivity implements ChangeDateDialogListener{
 	private GraphicalView mChart;
 	private String[] mMonths = new String[] { "Jan", "Feb", "Mar", "Apr", "May",
 			"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
@@ -159,7 +159,7 @@ public class ChartActivity extends FragmentActivity implements ChangeDateDialogL
 	}
 	private void createDataSet() {
 		
-		createScoreSeries(3, 2015,0); // TODO: Replace this with current month and year
+		createScoreSeries(mMonth, mYear,0); // TODO: Replace this with current month and year
 		Log.i(TAG,"no problem with the loop");
 		// Creating a dataset to hold each series
 		dataset = new XYMultipleSeriesDataset();
@@ -167,11 +167,11 @@ public class ChartActivity extends FragmentActivity implements ChangeDateDialogL
 		dataset.addSeries(easySeries);
 		
 		
-		createScoreSeries(3, 2015,1); // TODO: Replace this with current month and year
+		createScoreSeries(mMonth, mYear,1); // TODO: Replace this with current month and year
 		dataset.addSeries(mediumSeries);
 		
 		
-		createScoreSeries(3, 2015,2); // TODO: Replace this with current month and year
+		createScoreSeries(mMonth, mYear,2); // TODO: Replace this with current month and year
 		dataset.addSeries(nastySeries);
 	}
 	

@@ -5,6 +5,7 @@
     <string name="view_progress_button_text">VIEW PROGRESS</string>
     <string name="options_button_text">OPTIONS</string>
     <string name="play_game_button_text">PLAY</string>
+    <string name="play_game_menu_options">Play</string>
     <string name="done_button_text">Done!</string>
     <string name="play_again_button_text">Play again</string>
     <string name="change_date_button_text">Change date</string>

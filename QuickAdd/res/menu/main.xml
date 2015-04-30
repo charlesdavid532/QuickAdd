@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.quickadd.MainActivity" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+    
+    
+    <item android:id="@+id/options"
+          android:title="@string/title_options" />
+    <item android:id="@+id/play"
+          android:title="@string/play_game_menu_options" />
 
 </menu>

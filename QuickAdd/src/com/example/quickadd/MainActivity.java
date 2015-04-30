@@ -41,7 +41,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity implements LeaveGameDialogListener {
+public class MainActivity extends MenuOptionsActivity implements LeaveGameDialogListener {
 	private GridData mGridData;
 	private GridView mGridView;
 	private ResultData mResultData;
@@ -57,6 +57,14 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 	private DBHelper mDBHelper;
 	private SharedPreferences mSharedPref;
 	private int mLevel;
+	
+	private static final int BACK_BTN_OK = 0;
+	private static final int CHART_BTN_OK = 1;
+	private static final int OPTIONS_BTN_OK = 2;
+	private static final int PLAY_BTN_OK = 3;
+	
+	private LeaveGameDialogFragment mFragment;
+	
 	
 	private static final String TAG = "MAIN-ACTIVITY";
 	@Override
@@ -112,7 +120,10 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		//getMenuInflater().inflate(R.menu.main, menu);
+		//return true;
+		super.onCreateOptionsMenu(menu);
+		menu.add(0,Menu.FIRST+2,Menu.NONE,R.string.title_chart);
 		return true;
 	}
 
@@ -122,7 +133,14 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == Menu.FIRST+2) {
+			onChartBtnClicked();
+			return true;
+		} else if (id == R.id.options) {
+			onOptionsBntClick();
+			return true;
+		} else if (id == R.id.play) {
+			onPlayAgainBtnClick();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -310,10 +328,14 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getApplicationContext(), ChartActivity.class);
-				startActivity(intent);
+				onChartBtnClicked();
 			}
 		});
+	}
+	
+	private void onChartBtnClicked() {
+		checkAndDisplayWarningDialog(CHART_BTN_OK);
+		
 	}
 	
 	private void hideFooter() {
@@ -339,7 +361,9 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 		fragment.show(getSupportFragmentManager(), "score");
 	}
 	
-	
+	private void onOptionsBntClick() {
+		checkAndDisplayWarningDialog(OPTIONS_BTN_OK);
+	}
 	private void initializePlayAgainBtn() {
 		mPlayAgainBtnView = (Button) findViewById(R.id.play_again_button);
 		mPlayAgainBtnView.setVisibility(View.INVISIBLE);
@@ -354,6 +378,10 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 	}
 	
 	private void onPlayAgainBtnClick() {
+		checkAndDisplayWarningDialog(PLAY_BTN_OK);
+	}
+	
+	private void onPlayAgainOkBtnClick() {
 		mGridData.createNewGrid(DifficultyLevel.EASY);
 		mainLayout.removeView(mGridTableView);
 		mGridTableView = mGridView.constructTable();
@@ -404,6 +432,8 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 		// TODO Auto-generated method stub
 		onExitActivity();
 		finish();
+		handleNavigation();
+		
 	}
 
 	@Override
@@ -414,9 +444,43 @@ public class MainActivity extends ActionBarActivity implements LeaveGameDialogLi
 	
 	@Override
 	public void onBackPressed() {
-		LeaveGameDialogFragment fragment = new LeaveGameDialogFragment();
-		fragment.show(getSupportFragmentManager(), "EXIT DIALOG");
+		checkAndDisplayWarningDialog(BACK_BTN_OK);
 	}
 	
+	private void checkAndDisplayWarningDialog(int id) {
+		if (mUserTimer.getIsTimerRunning()) {
+			mFragment = new LeaveGameDialogFragment(id);
+			mFragment.show(getSupportFragmentManager(), "EXIT DIALOG");
+		} else {
+			handleNavigation(id);
+		}
+	}
+	
+	private void handleNavigation(int id) {
+		decideNavigation(id);
+	}
+	
+	private void handleNavigation() {
+		decideNavigation(mFragment.getBtnId());
+	}
+	
+	private void decideNavigation(int id) {
+		Intent intent;
+		switch (id) {
+		case BACK_BTN_OK:
+			break;
+		case CHART_BTN_OK:
+			intent = new Intent(getApplicationContext(), ChartActivity.class);
+			startActivity(intent);
+			break;
+		case OPTIONS_BTN_OK:
+			intent = new Intent(getApplicationContext(), OptionsActivity.class);
+			startActivity(intent);
+			break;
+		case PLAY_BTN_OK:
+			onPlayAgainOkBtnClick();
+			break;
+		}
+	}
 
 }

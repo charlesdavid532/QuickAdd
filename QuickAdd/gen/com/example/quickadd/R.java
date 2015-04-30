@@ -1100,7 +1100,6 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050064;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1146,7 +1145,9 @@ containing a value of this type.
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
+        public static final int options=0x7f050064;
         public static final int options_button=0x7f05005f;
+        public static final int play=0x7f050065;
         public static final int play_again_button=0x7f050049;
         public static final int play_game_button=0x7f050060;
         public static final int progress_circular=0x7f050018;
@@ -1292,25 +1293,26 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
-        public static final int action_settings=0x7f0a0015;
+        public static final int action_settings=0x7f0a0016;
         public static final int app_name=0x7f0a000d;
-        public static final int cancel=0x7f0a001d;
-        public static final int change_date_button_text=0x7f0a0013;
-        public static final int column_wise_label_text=0x7f0a001f;
-        public static final int done_button_text=0x7f0a0011;
-        public static final int exit_label_text=0x7f0a0020;
-        public static final int off=0x7f0a001a;
-        public static final int ok=0x7f0a001b;
-        public static final int on=0x7f0a0019;
+        public static final int cancel=0x7f0a001e;
+        public static final int change_date_button_text=0x7f0a0014;
+        public static final int column_wise_label_text=0x7f0a0020;
+        public static final int done_button_text=0x7f0a0012;
+        public static final int exit_label_text=0x7f0a0021;
+        public static final int off=0x7f0a001b;
+        public static final int ok=0x7f0a001c;
+        public static final int on=0x7f0a001a;
         public static final int options_button_text=0x7f0a000f;
-        public static final int play_again_button_text=0x7f0a0012;
+        public static final int play_again_button_text=0x7f0a0013;
         public static final int play_game_button_text=0x7f0a0010;
-        public static final int score_text=0x7f0a0014;
-        public static final int set=0x7f0a001c;
-        public static final int set_date_string=0x7f0a001e;
-        public static final int title_chart=0x7f0a0016;
-        public static final int title_grid=0x7f0a0017;
-        public static final int title_options=0x7f0a0018;
+        public static final int play_game_menu_options=0x7f0a0011;
+        public static final int score_text=0x7f0a0015;
+        public static final int set=0x7f0a001d;
+        public static final int set_date_string=0x7f0a001f;
+        public static final int title_chart=0x7f0a0017;
+        public static final int title_grid=0x7f0a0018;
+        public static final int title_options=0x7f0a0019;
         public static final int view_progress_button_text=0x7f0a000e;
     }
     public static final class style {

@@ -11,6 +11,10 @@ import android.support.v4.app.DialogFragment;
 
 public class LeaveGameDialogFragment extends DialogFragment {
 	
+	private int mBtnId;
+	public LeaveGameDialogFragment(int id) {
+		this.setBtnId(id);
+	}
 	
 	public interface LeaveGameDialogListener {
 		public void onDialogPositiveClick(DialogFragment dialog);
@@ -56,5 +60,13 @@ public class LeaveGameDialogFragment extends DialogFragment {
 						}
 				});
 		 return builder.create();
+	}
+
+	public int getBtnId() {
+		return mBtnId;
+	}
+
+	public void setBtnId(int btnId) {
+		this.mBtnId = btnId;
 	}
 }
