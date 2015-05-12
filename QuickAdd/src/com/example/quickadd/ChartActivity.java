@@ -190,6 +190,7 @@ public class ChartActivity extends MenuOptionsActivity implements ChangeDateDial
 		easyRenderer.setDisplayChartValues(true);
 		// setting chart value distance
 		easyRenderer.setDisplayChartValuesDistance(10);
+		easyRenderer.setChartValuesTextSize(15f);
 		// setting line graph point style to circle
 		easyRenderer.setPointStyle(PointStyle.CIRCLE);
 		// setting stroke of the line chart to solid
@@ -205,6 +206,7 @@ public class ChartActivity extends MenuOptionsActivity implements ChangeDateDial
 		mediumRenderer.setDisplayChartValues(true);
 		// setting chart value distance
 		mediumRenderer.setDisplayChartValuesDistance(10);
+		mediumRenderer.setChartValuesTextSize(8f);
 		// setting line graph point style to circle
 		mediumRenderer.setPointStyle(PointStyle.CIRCLE);
 		// setting stroke of the line chart to solid
@@ -220,6 +222,7 @@ public class ChartActivity extends MenuOptionsActivity implements ChangeDateDial
 		nastyRenderer.setDisplayChartValues(true);
 		// setting chart value distance
 		nastyRenderer.setDisplayChartValuesDistance(10);
+		nastyRenderer.setChartValuesTextSize(8f);
 		// setting line graph point style to circle
 		nastyRenderer.setPointStyle(PointStyle.CIRCLE);
 		// setting stroke of the line chart to solid
@@ -246,15 +249,15 @@ public class ChartActivity extends MenuOptionsActivity implements ChangeDateDial
 		 * Customizing graphs
 		 */
 		// setting text size of the title
-		multiRenderer.setChartTitleTextSize(18);
+		multiRenderer.setChartTitleTextSize(26);
 		// setting text size of the axis title
-		multiRenderer.setAxisTitleTextSize(16);
+		multiRenderer.setAxisTitleTextSize(24);
 		// setting text size of the graph lable
-		multiRenderer.setLabelsTextSize(14);
+		multiRenderer.setLabelsTextSize(20);
 		// setting zoom buttons visiblity
 		multiRenderer.setZoomButtonsVisible(false);
 		// setting pan enablity which uses graph to move on both axis
-		multiRenderer.setPanEnabled(true, false);
+		multiRenderer.setPanEnabled(false, false);
 		// setting click false on graph
 		multiRenderer.setClickEnabled(false);
 		// setting zoom to false on both axis
@@ -277,7 +280,7 @@ public class ChartActivity extends MenuOptionsActivity implements ChangeDateDial
 		// setting to in scroll to false
 		multiRenderer.setInScroll(false);
 		// setting to set legend height of the graph
-		multiRenderer.setLegendHeight(30);
+		multiRenderer.setLegendHeight(60);
 		// setting x axis label align
 		multiRenderer.setXLabelsAlign(Align.CENTER);
 		// setting y axis label to align
@@ -305,10 +308,11 @@ public class ChartActivity extends MenuOptionsActivity implements ChangeDateDial
 		multiRenderer.setApplyBackgroundColor(true);
 		multiRenderer.setScale(2f);
 		// setting x axis point size
-		multiRenderer.setPointSize(4f);
+		multiRenderer.setPointSize(8f);
+		//multiRenderer.setAnnotationsTextSize(30f);
 		// setting the margin size for the graph in the order top, left, bottom,
 		// right
-		multiRenderer.setMargins(new int[] { 30, 30, 30, 30 });
+		multiRenderer.setMargins(new int[] { 60, 60, 60, 60 });
 		multiRenderer.addSeriesRenderer(easyRenderer);
 		multiRenderer.addSeriesRenderer(mediumRenderer);
 		multiRenderer.addSeriesRenderer(nastyRenderer);
